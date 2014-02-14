@@ -1,0 +1,70 @@
+The Benchmark client was designed to be multithreaded to give a better estimation of server load due to multiple connections at a time. Each thread writes to the out stream and reads from the in stream before terminating. A semaphore limiting the amount of threads was added due to "too many open files" errors.
+
+The performance metric is the amount of connections to the server and back within a time frame. I ran three trials with each server for 60 seconds each trial.
+
+
+Summarized Output:
+
+Simple Server's number of requests serviced in 60 seconds: 111350, 110379, 105050
+MTServer's number of requests serviced in 60 seconds:117777, 120248, 119273
+
+
+
+Raw output:
+
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo simple && java SimpleServer & java BenchmarkClient 127.0.0.1 && kill %%
+[2] 13362
+
+simple
+Number Of requests serviced in 60 seconds = 111350
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+[2]+  Terminated              cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo simple && java SimpleServer
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo MT && java MTServer & java BenchmarkClient 127.0.0.1 && kill %%
+[2] 4278
+
+MT
+Number Of requests serviced in 60 seconds = 117777
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+[2]+  Terminated              cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo MT && java MTServer
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo simple && java SimpleServer & java BenchmarkClient 127.0.0.1 && kill %%
+[2] 14916
+
+simple
+Number Of requests serviced in 60 seconds = 110379
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+[2]+  Terminated              cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo simple && java SimpleServer
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo MT && java MTServer & java BenchmarkClient 127.0.0.1 && kill %%
+[2] 5093
+
+MT
+Number Of requests serviced in 60 seconds = 120248
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+[2]+  Terminated              cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo MT && java MTServer
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo simple && java SimpleServer & java BenchmarkClient 127.0.0.1 && kill %%
+[2] 16247
+
+simple
+Number Of requests serviced in 60 seconds = 105050
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+[2]+  Terminated              cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo simple && java SimpleServer
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo MT && java MTServer & java BenchmarkClient 127.0.0.1 && kill %%
+[2] 19489
+
+MT
+Number Of requests serviced in 60 seconds = 119273
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test$ 
+[2]+  Terminated              cp ../socketServerThreaded/bin/* . && cp ../socketServer/bin/* . && echo && echo MT && java MTServer
+clifford@clifford-HP-Spectre-13-x2-PC:~/workspace/test
+
+ 
+
+
+
+
+
+
+
+Multithreading makes many copies of a program run without actually making a lot of copies of a program. Therefore, one server can perform as many smaller servers would so no one has to wait for a socket to open.  
+
